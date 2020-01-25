@@ -2,8 +2,10 @@ const mongoose = require('mongoose');
 
 const ArticleSchema = new mongoose.Schema({
   author: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
+    type: String,
+    default: 'loh',
+    // type: mongoose.Schema.Types.ObjectId,
+    // ref: 'User',
   },
   title: {
     type: String,
@@ -13,11 +15,7 @@ const ArticleSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  tags: [
-    {
-      tag: String,
-    },
-  ],
+  tags: [String],
   category: {
     type: String,
     default: 'anything',
