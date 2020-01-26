@@ -12,8 +12,10 @@ const signup = require('./routes/signup');
 const login = require('./routes/login');
 
 const PORT = process.env.PORT || 3002;
+const DB_URL = process.env.NODE_ENV === 'test'
+  ? config.db.test_url : config.db.url;
 
-mongoose.connect(config.db.url, { useNewUrlParser: true })
+mongoose.connect(DB_URL, { useNewUrlParser: true })
   .catch((error) => console.log(error.massage));
 mongoose.connection.on('error', (err) => {
   console.log(err);
@@ -35,3 +37,5 @@ app.get('/ready', (req, res) => {
 });
 
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
+
+module.exports = app;
