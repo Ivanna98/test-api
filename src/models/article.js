@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const ArticleSchema = new mongoose.Schema({
   author: {
     type: String,
-    default: 'loh',
+    default: 'author',
     // type: mongoose.Schema.Types.ObjectId,
     // ref: 'User',
   },
@@ -15,7 +15,11 @@ const ArticleSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  tags: [String],
+  tags: [
+    {
+      tag: String,
+    },
+  ],
   category: {
     type: String,
     default: 'anything',

@@ -12,7 +12,6 @@ router.post('/', async (req, res) => {
       tags,
       category,
     } = req.body;
-    console.log(typeof tags);
     const article = new ArticleCollection({
       author,
       title,
