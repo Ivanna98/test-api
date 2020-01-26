@@ -9,6 +9,7 @@ const config = require('./config');
 const logger = require('./middleware/logger');
 const articles = require('./routes/articles');
 const signup = require('./routes/signup');
+const login = require('./routes/login');
 
 const PORT = process.env.PORT || 3002;
 
@@ -28,6 +29,7 @@ connectPassport(passport);
 
 app.use('/articles', articles);
 app.use('/signup', signup);
+app.use('/login', login);
 app.get('/ready', (req, res) => {
   res.send('I`m alive');
 });
