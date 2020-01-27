@@ -15,6 +15,7 @@ const PORT = process.env.PORT || 3002;
 const DB_URL = config.db.url;
 
 mongoose.connect(DB_URL, { useNewUrlParser: true })
+  .then(() => app.listen(PORT, () => console.log(`Server started on port ${PORT}`)))
   .catch((error) => console.log(error.massage));
 mongoose.connection.on('error', (err) => {
   console.log(err);
@@ -35,6 +36,5 @@ app.get('/ready', (req, res) => {
   res.send('I`m alive');
 });
 
-app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
 
 module.exports = app;
