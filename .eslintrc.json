@@ -18,6 +18,7 @@
         "no-console": "off",
         "max-len": "error",
         "no-unused-vars": "off",
-        "linebreak-style": "off"
+        "linebreak-style": "off",
+        "no-underscore-dangle": "off"
     }
 }
