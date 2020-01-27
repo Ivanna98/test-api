@@ -4,7 +4,7 @@ const UserSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
-    minlength: 5,
+    minlength: 2,
     maxlength: 25,
     trim: true,
   },
@@ -21,7 +21,6 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true,
     minlength: 8,
-    maxlength: 20,
     trim: true,
   },
 }, {

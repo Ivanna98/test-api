@@ -24,7 +24,7 @@ router.post('/', passport.authenticate('jwt', { session: false }), async (req, r
     const savedRecord = await article.save();
     return res.json(savedRecord);
   } catch (error) {
-    return res.status(400).end();
+    return res.status(400).send({ error: error.message });
   }
 });
 
@@ -48,7 +48,7 @@ router.put('/:id', passport.authenticate('jwt', { session: false }), async (req,
     });
     return res.json({ updateArticle });
   } catch (e) {
-    return res.status(400).end();
+    return res.status(400).send({ error: e.message });
   }
 });
 
@@ -57,7 +57,7 @@ router.get('/', async (req, res) => {
     const articles = await ArticleCollection.find();
     return res.json({ articles });
   } catch (e) {
-    return res.status(400).end();
+    return res.status(400).send({ error: e.message });
   }
 });
 
@@ -70,7 +70,7 @@ router.get('/:id', async (req, res) => {
     if (oneArticle === null) return res.sendStatus(404);
     return res.json(oneArticle);
   } catch (e) {
-    return res.status(400).end();
+    return res.status(400).send({ error: e.message });
   }
 });
 
@@ -80,7 +80,7 @@ router.delete('/:id', passport.authenticate('jwt', { session: false }), async (r
     await ArticleCollection.findByIdAndDelete(id);
     return res.status(200).end();
   } catch (e) {
-    return res.status(400).end();
+    return res.status(400).send({ error: e.message });
   }
 });
 
