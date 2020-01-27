@@ -4,7 +4,6 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 const UserCollection = require('../models/user');
 
-// eslint-disable-next-line consistent-return
 router.post('/', async (req, res) => {
   try {
     const {

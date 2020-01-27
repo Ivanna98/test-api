@@ -6,7 +6,6 @@ const bcrypt = require('bcryptjs');
 const { secretKey, jwtExpiration } = require('../config');
 const UserCollection = require('../models/user');
 
-// eslint-disable-next-line consistent-return
 router.post('/', async (req, res) => {
   try {
     const {
