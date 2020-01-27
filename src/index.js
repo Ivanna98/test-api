@@ -12,8 +12,7 @@ const signup = require('./routes/signup');
 const login = require('./routes/login');
 
 const PORT = process.env.PORT || 3002;
-const DB_URL = process.env.NODE_ENV === 'test'
-  ? config.db.test_url : config.db.url;
+const DB_URL = config.db.url;
 
 mongoose.connect(DB_URL, { useNewUrlParser: true })
   .catch((error) => console.log(error.massage));
