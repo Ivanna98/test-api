@@ -28,7 +28,7 @@ router.post('/', passport.authenticate('jwt', { session: false }), async (req, r
   }
 });
 
-router.put('/', passport.authenticate('jwt', { session: false }), async (req, res) => {
+router.put('/:id', passport.authenticate('jwt', { session: false }), async (req, res) => {
   try {
     const {
       title,
@@ -46,7 +46,7 @@ router.put('/', passport.authenticate('jwt', { session: false }), async (req, re
     }, {
       new: true,
     });
-    return res.json(updateArticle);
+    return res.json({ updateArticle });
   } catch (e) {
     return res.status(400).end();
   }
@@ -55,7 +55,7 @@ router.put('/', passport.authenticate('jwt', { session: false }), async (req, re
 router.get('/', async (req, res) => {
   try {
     const articles = await ArticleCollection.find();
-    return res.json(articles);
+    return res.json({ articles });
   } catch (e) {
     return res.status(400).end();
   }

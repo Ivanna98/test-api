@@ -10,5 +10,10 @@ const utils = {
     .request(app)
     .post('/login')
     .send(data),
+  post: async (data, { token }) => chai
+    .request(app)
+    .post('/articles')
+    .set('Authorization', token)
+    .send(data),
 }
 module.exports = utils;
