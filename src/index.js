@@ -4,9 +4,9 @@ const app = express();
 const mongoose = require('mongoose');
 const cors = require('cors');
 const passport = require('passport');
+const logger = require('morgan');
 const connectPassport = require('./middleware/passport');
 const config = require('./config');
-const logger = require('./middleware/logger');
 const articles = require('./routes/articles');
 const signup = require('./routes/signup');
 const login = require('./routes/login');
@@ -22,7 +22,7 @@ mongoose.connection.on('error', (err) => {
 });
 
 app.use(cors());
-app.use(logger);
+app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
