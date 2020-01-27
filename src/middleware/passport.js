@@ -9,21 +9,21 @@ const options = {
 };
 
 const connectPassport = (passport) => {
-  passport.use(
-    new Strategy(options, (payload, done) => {
-      User.findById(payload.id)
-        .then((user) => {
-          if (user) {
-            return done(null, {
-              _id: user._id,
-              name: user.name,
-              email: user.email,
-            });
-          }
-          return done(null, false);
-        }).catch(() => done(null, false));
-    }),
-  );
+  passport.use(new Strategy(options, async (payload, done) => {
+    try {
+      const user = await User.findById(payload.id);
+      if (user) {
+        return done(null, {
+          _id: user._id,
+          name: user.name,
+          email: user.email,
+        });
+      }
+      return done(null, false);
+    } catch (e) {
+      return done(null, false);
+    }
+  }));
 };
 
 module.exports = connectPassport;

@@ -68,7 +68,7 @@ describe('Articles', () => {
         .request(app)
         .get(`/articles/${id}`)
         .send();
-      assert.equal(getNewRes.body, null);
+      assert.equal(getNewRes.status, 404);
     });
   });
   describe('Put', () => {
