@@ -67,7 +67,7 @@ router.get('/:id', async (req, res) => {
     const oneArticle = await ArticleCollection
       .findById(id)
       .populate({ path: 'author', model: UserCollection, select: { _id: 1, name: 1, email: 1 } });
-    if (oneArticle === null) return res.jsonStatus(404);
+    if (oneArticle === null) return res.sendStatus(404);
     return res.json(oneArticle);
   } catch (e) {
     return res.status(400).json({ error: e.message });
@@ -78,7 +78,7 @@ router.delete('/:id', passport.authenticate('jwt', { session: false }), async (r
   try {
     const { id } = req.params;
     await ArticleCollection.findByIdAndDelete(id);
-    return res.status(200).json({ massage: 'Delete successful' });
+    return res.status(200).json({ message: 'Delete successful' });
   } catch (e) {
     return res.status(400).json({ error: e.message });
   }
