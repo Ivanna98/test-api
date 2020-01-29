@@ -4,13 +4,14 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 const UserCollection = require('../models/user');
 const generateToken = require('../utils/generateToken');
+const { loginSchema } = require('./validator');
 
 router.post('/', async (req, res) => {
   try {
     const {
       email,
       password,
-    } = req.body;
+    } = await loginSchema.validateAsync(req.body);
     const user = await UserCollection.findOne({ email }).lean().exec();
     if (!user) {
       return res.status(400).json({ error: 'No account found' });

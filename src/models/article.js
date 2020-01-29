@@ -21,7 +21,7 @@ const ArticleSchema = new mongoose.Schema({
   category: {
     type: String,
     default: 'anything',
-    enum: ['something', 'else', 'js', 'node.js', 'category'],
+    enum: ['something', 'else', 'js', 'node.js', 'category', 'anything'],
   },
 }, {
   timestamps: true,

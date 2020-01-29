@@ -4,6 +4,7 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 const UserCollection = require('../models/user');
 const generateToken = require('../utils/generateToken');
+const { signupSchema } = require('./validator');
 
 router.post('/', async (req, res) => {
   try {
@@ -11,7 +12,7 @@ router.post('/', async (req, res) => {
       name,
       password,
       email,
-    } = req.body;
+    } = await signupSchema.validateAsync(req.body);
     if (await UserCollection.findOne({ email })) {
       return res.status(400).json({ error: 'User already exist' });
     }
@@ -31,6 +32,7 @@ router.post('/', async (req, res) => {
     const token = await generateToken(payload);
     return res.json({ token: `Bearer ${token}` });
   } catch (error) {
+    console.log(error.message);
     return res.status(400).json({ error: error.message });
   }
 });
