@@ -1,22 +1,27 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const UserCollection = require('../src/models/user');
-
+const app = require('../src/index');
 const { signupData, loginData, loginWrongData} = require('./mock');
 const {signup, login} = require('./utils');
 const { assert } = chai;
 chai.use(chaiHttp);
 
 describe('Auth', () => {
+  // before( done => {
+  //   console.log("before hook")
+  //   app.on('app_started', () => done() );
+  // });
+
   beforeEach(async () => {
     await UserCollection.deleteMany({});
-  })
+  });
 
-  it('Should signup and login with correct input', async () => {
+  it('Should signup and receive token', async () => {
     const signupRes = await signup(signupData);
     assert.equal(signupRes.status, 200);
-    const loginRes = await login(loginData);
-    assert.equal(loginRes.status, 200);
+    assert.exists(signupRes.body.token, 'Token does not exist');
+    assert.typeOf(signupRes.body.token, 'string');
   });
 
   it('Should return token after login', async () => {

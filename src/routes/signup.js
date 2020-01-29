@@ -3,6 +3,7 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 const UserCollection = require('../models/user');
+const generateToken = require('../utils/generateToken');
 
 router.post('/', async (req, res) => {
   try {
@@ -19,23 +20,18 @@ router.post('/', async (req, res) => {
       password,
       email,
     });
-    bcrypt.genSalt(10, (err, salt) => {
-      if (err) {
-        throw err;
-      }
-      bcrypt.hash(newUser.password, salt,
-        async (err2, hash) => {
-          if (err2) {
-            throw err2;
-          }
-          newUser.password = hash;
-          await newUser.save();
-          console.log(newUser.password);
-          res.status(200).end();
-        });
-    });
+    const salt = await bcrypt.genSalt(10);
+    const hash = await bcrypt.hash(newUser.password, salt);
+    newUser.password = hash;
+    await newUser.save();
+    const payload = {
+      id: newUser._id,
+      name,
+    };
+    const token = await generateToken(payload);
+    return res.json({ token: `Bearer ${token}` });
   } catch (error) {
-    return res.status(400).send({ error: error.message });
+    return res.status(400).json({ error: error.message });
   }
 });
 

@@ -7,7 +7,7 @@
     "start": "node src/index.js",
     "dev": "cross-env NODE_ENV=development nodemon --exec \"npm run lint && npm run start\"",
     "lint": "eslint --fix --config .eslintrc src/**/*.js",
-    "test": "cross-env NODE_ENV=testing nyc --reporter=text mocha test/*.js --exit"
+    "test": "cross-env NODE_ENV=testing nyc --reporter=text mocha test/*.js --exit --timeout 5000"
   },
   "repository": {
     "type": "git",
