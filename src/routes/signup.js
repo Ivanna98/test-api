@@ -14,7 +14,7 @@ router.post('/', async (req, res) => {
       email,
     } = await signupSchema.validateAsync(req.body);
     if (await UserCollection.findOne({ email })) {
-      return res.status(400).json({ error: 'User already exist' });
+      return res.status(401).json({ error: 'User already exist' });
     }
     const newUser = new UserCollection({
       name,
@@ -32,7 +32,6 @@ router.post('/', async (req, res) => {
     const token = await generateToken(payload);
     return res.json({ token: `Bearer ${token}` });
   } catch (error) {
-    console.log(error.message);
     return res.status(400).json({ error: error.message });
   }
 });

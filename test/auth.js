@@ -8,10 +8,6 @@ const { assert } = chai;
 chai.use(chaiHttp);
 
 describe('Auth', () => {
-  // before( done => {
-  //   console.log("before hook")
-  //   app.on('app_started', () => done() );
-  // });
 
   beforeEach(async () => {
     await UserCollection.deleteMany({});
@@ -34,7 +30,7 @@ describe('Auth', () => {
   it('Should throw error when user already exist', async () => {
     await signup(signupData);
     const signupRes = await signup(signupData)
-    assert.equal(signupRes.status, 400);
+    assert.equal(signupRes.status, 401);
   });
   
   it('Should throw error when password or email is wrong', async () => {
