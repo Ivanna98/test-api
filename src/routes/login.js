@@ -25,8 +25,9 @@ router.post('/', async (req, res) => {
       const token = await generateToken(payload);
       return res.json({ token: `Bearer ${token}` });
     }
-  } catch (e) {
-    return res.status(400).json({ error: 'Password or email is incorrect' });
+    throw Error('Password or email is incorrect');
+  } catch (err) {
+    return res.status(400).json({ error: err.message });
   }
 });
 
