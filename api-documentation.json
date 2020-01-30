@@ -1,0 +1,384 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "Public API for news website",
+    "version": "1.0.0",
+    "title": "News"
+  },
+  "host": "localhost:3002",
+  "tags": [
+    {
+      "name": "article",
+      "description": "Main model for news article"
+    },
+    {
+      "name": "user",
+      "description": "Main model for users, currently represents only admins"
+    }
+  ],
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/articles": {
+      "post": {
+        "tags": [
+          "article"
+        ],
+        "summary": "Create a new article",
+        "description": "",
+        "operationId": "addArticle",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Article input needed to save",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Article"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Article"
+            }
+          },
+          "400": {
+            "description": "bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      },
+      "get": {
+        "tags": [
+          "article"
+        ],
+        "summary": "Get all articles",
+        "description": "Returns array of articles",
+        "operationId": "GetAllArticles",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Article"
+              }
+            }
+          },
+          "400": {
+            "description": "bad request"
+          }
+        }
+      }
+    },
+    "/articles/{articleId}": {
+      "get": {
+        "tags": [
+          "article"
+        ],
+        "summary": "Find article by ID",
+        "description": "Returns a single article",
+        "operationId": "getArticleById",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "articleId",
+            "in": "path",
+            "description": "ID of article to return",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Article"
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "article"
+        ],
+        "summary": "Updates a article",
+        "description": "Return a article",
+        "operationId": "updatePetWithForm",
+        "consumes": [
+          "application/x-www-form-urlencoded",
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "articleId",
+            "in": "path",
+            "description": "ID of article that needs to be updated",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Article input needed to update",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Article"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Article"
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "article"
+        ],
+        "summary": "Deletes a article",
+        "description": "",
+        "operationId": "deleteArticle",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "articleId",
+            "in": "path",
+            "description": "Article id to delete",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Delete successful"
+          },
+          "400": {
+            "description": "Bad request"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      }
+    },
+    "/signup": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Signup admin to news system",
+        "description": "",
+        "operationId": "signupUser",
+        "consumes": [
+          "application/x-www-form-urlencoded",
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Data for signup user",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Signup"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "token": {
+                  "type": "string"
+                }
+              }
+            },
+            "description": "successful operation"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "User already exist"
+          }
+        }
+      }
+    },
+    "/login": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Login admin to news system",
+        "description": "",
+        "operationId": "loginUser",
+        "consumes": [
+          "application/x-www-form-urlencoded",
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Data for login user",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Login"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "token": {
+                  "type": "string"
+                }
+              }
+            },
+            "description": "successful operation"
+          },
+          "400": {
+            "description": "Password or email is incorrect"
+          },
+          "402": {
+            "description": "No account found"
+          }
+        }
+      }
+    }
+  },
+  "securityDefinitions": {
+    "api_key": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header"
+    }
+  },
+  "definitions": {
+    "Article": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "maxLength": 150
+        },
+        "content": {
+          "type": "string",
+          "maxLength": 700
+        },
+        "tags": {
+          "type": "array",
+          "maxItems": 10,
+          "items": {
+            "type": "string",
+            "maxLength": 20
+          }
+        },
+        "category": {
+          "type": "string",
+          "enum": [
+            "something",
+            "else",
+            "js",
+            "node.js",
+            "category",
+            "anything"
+          ]
+        }
+      }
+    },
+    "Signup": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 25
+        },
+        "email": {
+          "type": "string",
+          "minLength": 5,
+          "maxLength": 40,
+          "pattern": "^\\w+([\\.-]?\\w+)*@\\w+([\\.-]?\\w+)*(\\.\\w{2,3})+$"
+        },
+        "password": {
+          "type": "string",
+          "minLength": 8,
+          "pattern": "^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{8,})"
+        }
+      }
+    },
+    "Login": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "minLength": 5,
+          "maxLength": 40,
+          "pattern": "^\\w+([\\.-]?\\w+)*@\\w+([\\.-]?\\w+)*(\\.\\w{2,3})+$"
+        },
+        "password": {
+          "type": "string",
+          "minLength": 8
+        }
+      }
+    }
+  }
+}

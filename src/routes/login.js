@@ -14,7 +14,7 @@ router.post('/', async (req, res) => {
     } = await loginSchema.validateAsync(req.body);
     const user = await UserCollection.findOne({ email }).lean().exec();
     if (!user) {
-      return res.status(400).json({ error: 'No account found' });
+      return res.status(402).json({ error: 'No account found' });
     }
     const isMatch = await bcrypt.compare(password, user.password);
     if (isMatch) {
