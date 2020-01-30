@@ -5,6 +5,7 @@ const passport = require('passport');
 const router = express.Router();
 const ArticleCollection = require('../models/article');
 const UserCollection = require('../models/user');
+const { articleSchema } = require('./validator');
 
 router.post('/', passport.authenticate('jwt', { session: false }), async (req, res) => {
   try {
@@ -13,7 +14,7 @@ router.post('/', passport.authenticate('jwt', { session: false }), async (req, r
       content,
       tags,
       category,
-    } = req.body;
+    } = await articleSchema.validateAsync(req.body);
     const article = new ArticleCollection({
       author: req.user._id,
       title,
@@ -35,7 +36,7 @@ router.put('/:id', passport.authenticate('jwt', { session: false }), async (req,
       content,
       tags,
       category,
-    } = req.body;
+    } = await articleSchema.validateAsync(req.body);
     const { id } = req.params;
     const updateArticle = await ArticleCollection.findByIdAndUpdate(id, {
       author: req.user._id,
@@ -67,7 +68,7 @@ router.get('/:id', async (req, res) => {
     const oneArticle = await ArticleCollection
       .findById(id)
       .populate({ path: 'author', model: UserCollection, select: { _id: 1, name: 1, email: 1 } });
-    if (oneArticle === null) return res.sendStatus(404);
+    if (oneArticle === null) return res.status(404).json({ message: 'Not found' });
     return res.json(oneArticle);
   } catch (e) {
     return res.status(400).json({ error: e.message });

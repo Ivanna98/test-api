@@ -1,20 +1,20 @@
 const express = require('express');
 
 const router = express.Router();
-const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
-const { secretKey, jwtExpiration } = require('../config');
 const UserCollection = require('../models/user');
+const generateToken = require('../utils/generateToken');
+const { loginSchema } = require('./validator');
 
 router.post('/', async (req, res) => {
   try {
     const {
       email,
       password,
-    } = req.body;
+    } = await loginSchema.validateAsync(req.body);
     const user = await UserCollection.findOne({ email }).lean().exec();
     if (!user) {
-      return res.status(400).json({ error: 'No account found' });
+      return res.status(402).json({ error: 'No account found' });
     }
     const isMatch = await bcrypt.compare(password, user.password);
     if (isMatch) {
@@ -22,13 +22,8 @@ router.post('/', async (req, res) => {
         id: user._id,
         name: user.name,
       };
-      jwt.sign(payload, secretKey, { expiresIn: jwtExpiration },
-        (err, token) => {
-          if (err) {
-            res.status(500).json({ error: 'Error signing token' });
-          }
-          res.json({ token: `Bearer ${token}` });
-        });
+      const token = await generateToken(payload);
+      return res.json({ token: `Bearer ${token}` });
     }
   } catch (e) {
     return res.status(400).json({ error: 'Password or email is incorrect' });
